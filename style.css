@@ -1,0 +1,113 @@
+body{
+    color: white;
+    overflow: hidden;
+    background-color: #232323;
+}
+.parent {
+    height: 100%;
+    width: 100%;
+    margin: 0;;
+    /* border: 1px solid blue;; */
+    /* background-color: red; */
+}
+
+canvas{
+    z-index: 1;
+}
+
+#canvasParent{
+    /* border: 5px solid green; */
+    /* padding: 10px; */
+}
+
+.dropDown{
+    background-color: #232323;
+    z-index: 999;
+}
+
+
+#leftNav {
+    width: 200px;
+    /* border: 1px solid red; */
+}
+
+#leftNav * {
+    background-color: #343434;
+}
+
+#leftNav *:hover{
+    background-color: #454545;
+}
+
+
+
+#rightNav{
+    width: 300px;
+}
+.sideNav{
+    /* width: 200px; */
+    
+    padding: 0;
+}
+
+input {
+    /* width: 50px; */
+    padding: 0px;
+    /* background-color: #232323; */
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+div {
+    border-radius: 0.3em;
+}
+span , nav{
+    background-color: #232323;
+    border-radius: 0.3em;
+}
+
+
+nav * {
+    background: #343434;
+    /* background-color: #343434; */
+    padding: 0.5em;
+    border-radius: 0.3em;
+    cursor: pointer;
+}
+
+nav *:hover{
+    background-color: #454545;
+    border-radius: 0.3em;
+}
+
+.properties-main{
+    background-color: #343434;
+    margin-bottom: 5px;
+}
+
+#rightNav h3, #leftNav h3 {
+    background-color: #343434;
+    margin-bottom: 0.3em;
+    padding: 0.3em;
+    border-radius: 0.3em;
+}
+
+.properties-main * {
+    border-radius: 0.3em;
+    width: 100%;
+}
+
+.properties-main input {
+    background: #454545;
+    border: 2px solid #454545;
+}

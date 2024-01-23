@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+
+                }
+            }
+        }
+    </script>
+
+    <title>My first three.js app</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <link href="./style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1 class=" underline"></h1>
+
+    <nav class="flex flex-row  gap-4 p-2  items-center justify-center  text-white">
+        
+        <a class="openHierarchy" >Hierarchy</a>
+        <a href="https://google.com">Redirect</a>
+        <div class="group inline-block relative">
+            <!-- Trigger button -->
+            <span class="text-white focus:outline-none focus:shadow-outline">
+                Create
+            </span>
+
+            <!-- Dropdown content -->
+            <ul class="dropDown absolute hidden w-max flex flex-col gap-1 mt-2 w-auto   shadow-lg">
+                <li class="py-2  hover:bg-gray-200">
+                    <a class="w-full" id="addPlane"> Plane </a>
+                </li>
+                <li class="py-2  hover:bg-gray-200">
+                    <a class="w-full" id="addCube"> Cube </a>
+                </li>
+                <li class="py-2  hover:bg-gray-200">
+                    <a class="w-full" id="addSphere"> Sphere </a>
+                </li>
+                <li class="py-2  hover:bg-gray-200">
+                    <input type="file" class="hidden" multiple="false" accept=".glb" id="importModel"
+                        value="Import Model" placeholder="Import Model" />
+                    <label class="w-max" for="importModel">Import</label>
+                </li>
+            </ul>
+        </div>
+
+        <a class="openProperties sm:relative" >Properties</a>
+
+
+    </nav>
+    <div id="parent" class="parent flex flex-row">
+
+
+        <!-- LeftNav -->
+        <div id="leftNav" class="sideNav hidden sm:block absolute h-auto left-0 top-16 p-1">
+            <h3 class="text-center m-1 p-1">Hierarchy</h3>
+        </div>
+
+        <!-- Canvas -->
+        <div id="canvasParent" class=" p-0 m-0 bg-red-200"></div>
+
+        <!-- RightNav -->
+        <div id="rightNav" class="sideNav hidden sm:block absolute h-auto right-0 top-16 p-1">
+            <h3 class="text-center">Properties</h3>
+        </div>
+
+
+    </div>
+
+    <script type="module" src="./script.js"></script>
+
+    <script>
+
+
+        var dropdown = $('.group');
+
+        dropdown.hover(
+            function () {
+                $(this).find('ul').removeClass('hidden');
+            },
+            function () {
+                $(this).find('ul').addClass('hidden');
+            }
+        );
+
+
+        $(".openHierarchy").on("click", function(){
+            const leftNav = ("#leftNav");
+            console.log("running");
+            $(leftNav).removeClass("sm:block");
+            if ($(leftNav).hasClass("hidden")){
+
+                $(leftNav).addClass("sm:block");
+                $(leftNav).removeClass("hidden")
+            }
+            else{
+                $(leftNav).removeClass("sm:block");
+                $(leftNav).addClass("hidden");
+            }
+        })
+
+
+        $(".openProperties").on("click", function(){
+            const rightNav = ("#rightNav");
+            console.log("running");
+            $(rightNav).removeClass("sm:block");
+            if ($(rightNav).hasClass("hidden")){
+                $(rightNav).addClass("sm:block");
+                $(rightNav).removeClass("hidden")
+            }
+            else{
+                $(rightNav).removeClass("sm:block");
+                $(rightNav).addClass("hidden");
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>
