@@ -13,7 +13,7 @@ import { TransformControls } from 'three/examples/jsm/controls/TransformControls
 const MODEL_FILENAME = "./assets/lamp.glb"
 const CANVAS_PARENT_ID = "#canvasParent";
 
-
+// Basic initialization for event handling, scene setup, lights etc
 const SCENE = new THREE.Scene();
 const raycaster = new Raycaster();
 const HIERARCHY_WINDOW = $("#leftNav");
@@ -42,12 +42,9 @@ controls.dampingFactor = 0.05;
 controls.screenSpacePanning = false;
 controls.maxPolarAngle = Math.PI / 2;
 
-// controls.addEventListener("change", RENDERER);
 
-// console.log("CONTROLS ARE", transformControls);
 SELECTED_OBJECT.setTransformControl(transformControls);
 ObjectManager.setNav(HIERARCHY_WINDOW);
-
 
 
 // creating objects
@@ -62,20 +59,19 @@ const circle = ObjectManager.createObject(ObjectManager.OBJECT_TYPES.SPHERE, "sp
 
 
 
-// mosue click 
+// mouse click 
 function onMouseClick(event) {
     // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
     mouse.x = ((event.clientX - RENDERER.domElement.getBoundingClientRect().left) / CANVAS_WIDTH) * 2 - 1;
     mouse.y = - ((event.clientY - RENDERER.domElement.getBoundingClientRect().top) / CANVAS_HEIGHT) * 2 + 1;
 
-    // Update the picking ray with the camera and mouse position
+
     raycaster.setFromCamera(mouse, camera);
 
     // Check for intersections
     const intersects = raycaster.intersectObjects(Object.values(ObjectManager.objs));
 
     if (intersects.length > 0) {
-        // Select the first intersected object (you can modify this logic based on your requirements)
 
         if (SELECTED_OBJECT.somethingSelected) {
             SELECTED_OBJECT.reset();
@@ -149,8 +145,6 @@ window.addEventListener('resize', () => {
     RENDERER.setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
 });
 
-
-// transformControls.addEventListener('change', RENDERER);
 
 transformControls.addEventListener('dragging-changed', function (event) {
 

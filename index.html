@@ -26,9 +26,9 @@
     <h1 class=" underline"></h1>
 
     <nav class="flex flex-row  gap-4 p-2  items-center justify-center  text-white">
-        
-        <a class="openHierarchy" >Hierarchy</a>
-        <a href="https://google.com">Redirect</a>
+
+        <a class="openHierarchy">Hierarchy</a>
+        <!-- <a href="https://google.com">Redirect</a> -->
         <div class="group inline-block relative">
             <!-- Trigger button -->
             <span class="text-white focus:outline-none focus:shadow-outline">
@@ -54,7 +54,7 @@
             </ul>
         </div>
 
-        <a class="openProperties sm:relative" >Properties</a>
+        <a class="openProperties sm:relative">Properties</a>
 
 
     </nav>
@@ -82,7 +82,7 @@
     <script>
 
 
-        var dropdown = $('.group');
+        const dropdown = $('.group');
 
         dropdown.hover(
             function () {
@@ -94,31 +94,31 @@
         );
 
 
-        $(".openHierarchy").on("click", function(){
+        $(".openHierarchy").on("click", function () {
             const leftNav = ("#leftNav");
             console.log("running");
             $(leftNav).removeClass("sm:block");
-            if ($(leftNav).hasClass("hidden")){
+            if ($(leftNav).hasClass("hidden")) {
 
                 $(leftNav).addClass("sm:block");
                 $(leftNav).removeClass("hidden")
             }
-            else{
+            else {
                 $(leftNav).removeClass("sm:block");
                 $(leftNav).addClass("hidden");
             }
         })
 
 
-        $(".openProperties").on("click", function(){
+        $(".openProperties").on("click", function () {
             const rightNav = ("#rightNav");
             console.log("running");
             $(rightNav).removeClass("sm:block");
-            if ($(rightNav).hasClass("hidden")){
+            if ($(rightNav).hasClass("hidden")) {
                 $(rightNav).addClass("sm:block");
                 $(rightNav).removeClass("hidden")
             }
-            else{
+            else {
                 $(rightNav).removeClass("sm:block");
                 $(rightNav).addClass("hidden");
             }

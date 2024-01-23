@@ -7,6 +7,9 @@ const TEMPLATE = {
         z : "number",
         methods: {
             generateHTML: (obj) => {
+
+                if (obj?.isAmbientLight) return null;
+
                 let output = `\
                 <div class="properties-main p-2 ">
                     <h3> Transform </h3>    
@@ -27,12 +30,43 @@ const TEMPLATE = {
             }
         }
     },
+    scale:  {
+        x : "number",
+        y : "number",
+        z : "number",
+        methods: {
+            generateHTML: (obj) => {
+
+                if (obj?.isCamera || obj?.isLight) return null;
+                let output = `\
+                <div class="properties-main p-2 ">
+                    <h3> Scale </h3>    
+                    <div class="flex flex-row items-center">
+                        X <input id='d-scale-1' class="d-scale w-16 m-1 p-1" type="number" value="${obj.scale.x}"/>
+                        Y <input id='d-scale-2' class="d-scale w-16 m-1 p-1" type="number" value="${obj.scale.y}"/>
+                        Z <input id='d-scale-3' class="d-scale w-16 m-1 p-1" type="number" value="${obj.scale.z}"/>
+                    </div>
+                    </div>
+                `
+                 
+                return output;
+            },
+
+            setPosition : (newPos) => {
+                $("#d-position-1").val();
+                
+            }
+        }
+    },
     rotation : {
         x: "number",
         y: "number",
         z: "number",
         methods: {
             generateHTML: (obj) => {
+
+                if (obj?.isAmbientLight) return null;
+
                 let output = `\
                 <div class="properties-main p-2 ">
                     <h3> Rotation </h3>    
@@ -51,6 +85,8 @@ const TEMPLATE = {
         color : "string",
         methods: {
             generateHTML: (obj) => {
+
+                if (obj?.isLight || obj?.isCamera) return null;
 
                 let color; 
                 if (obj.type == "Mesh"){
@@ -77,8 +113,11 @@ const TEMPLATE = {
     light_color: {
         color: "string",
         methods: {
-            
+
+
             generateHTML: (obj) => {
+
+                if (!obj?.isLight) return null;
 
                 let color; 
                 if (obj.type == "Mesh"){
@@ -107,9 +146,9 @@ const TEMPLATE = {
         methods: {
             
             generateHTML: (obj) => {
-
                 
-
+                if (!obj?.isLight) return null;
+                
                 let output = `\
                 <div class="properties-main p-2 ">
                 <h3> Light Intensity </h3>    
@@ -141,31 +180,17 @@ export class PropertiesWindow{
         }
 
         let html = "<h3 class='text-center'>Properties</h3>"
+        console.log("running props for ", selectedItem);
         for (const key in TEMPLATE){
 
             if (selectedItem.type == "Object3D" || selectedItem.type == "TransformControlsPlane" || selectedItem.type == "Line"){
                 console.log("selected item is Object3D", selectedItem);
                 break;
             }
-            if (selectedItem?.isDirectionalLight && key == "material_color"){
-                continue;
-            }
-
-            if (selectedItem?.isAmbientLight && (key == "transform" || key == "rotation" || key == "material_color")){
-                continue;
-            }
-
-            if (selectedItem.type == "Mesh" && (key == "light_color" || key == "light_intensity")){
-                continue
-            }
-
-            if (selectedItem.isCamera && (key == "material_color" || key == "light_color" || key == "light_intensity")){
-                continue;
-            }
-
-            console.log("running props for ", selectedItem);
-
-            html += TEMPLATE[key].methods.generateHTML(selectedItem);
+  
+        
+            const temp = TEMPLATE[key].methods.generateHTML(selectedItem);
+            if (temp != null) html += temp;
 
         }
 
@@ -184,6 +209,16 @@ $(document).on('input', '.d-position', function(){
     const y = $($(".d-position")[1]).val();
     const z = $($(".d-position")[2]).val();
     SELECTED_OBJECT.obj.position.set(x,y,z);
+})
+
+
+$(document).on('input', '.d-scale', function(){
+    console.log("running");
+    console.log("OKAY", $($(".d-scale")[0]).val())
+    const x = $($(".d-scale")[0]).val();
+    const y = $($(".d-scale")[1]).val();
+    const z = $($(".d-scale")[2]).val();
+    SELECTED_OBJECT.obj.scale.set(x,y,z);
 })
 
 
@@ -214,7 +249,6 @@ $(document).on('input', '.d-light', function(){
     
     SELECTED_OBJECT.obj.color.set(col);
 })
-
 
 
 $(document).on('input', '.d-intensity', function(){
