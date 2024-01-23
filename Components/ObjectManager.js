@@ -29,7 +29,7 @@ export class ObjectManager {
         console.log("leftNav", nav);
     }
 
-    static async createObject(objectType, name, scene, fileName = null) {
+    static createObject(objectType, name, scene) {
         let newObj = null;
         switch (objectType) {
             case this.OBJECT_TYPES.CAMERA: {
@@ -71,11 +71,6 @@ export class ObjectManager {
                 break;
             }
 
-            case this.OBJECT_TYPES.LOAD_MODEL: {
-                newObj = await this.loadCustomModel(fileName, scene);
-                break;
-            }
-
             case this.OBJECT_TYPES.CUBE: {
 
                 let geometry = new BoxGeometry();
@@ -103,6 +98,15 @@ export class ObjectManager {
             scene.add(newObj);
             this.addNewObject(newObj);
         }
+        
+        return newObj;
+    }
+
+    static async importCustomModel(scene, fileName = null){
+        let newObj = null;
+        newObj = await this.loadCustomModel(fileName, scene);
+
+
         
         return newObj;
     }
@@ -169,18 +173,18 @@ export class ObjectManager {
 
 
 
-$("#addSphere").on("click", async function () {
-    await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.SPHERE, "sphere", ObjectManager.scene);
+$("#addSphere").on("click", function () {
+    ObjectManager.createObject(ObjectManager.OBJECT_TYPES.SPHERE, "sphere", ObjectManager.scene);
 })
 
 
-$("#addPlane").on("click", async function () {
-    await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.PLANE, "plane", ObjectManager.scene);
+$("#addPlane").on("click", function () {
+    ObjectManager.createObject(ObjectManager.OBJECT_TYPES.PLANE, "plane", ObjectManager.scene);
 })
 
 
-$("#addCube").on("click", async function () {
-    await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.CUBE, "cube", ObjectManager.scene);
+$("#addCube").on("click", function () {
+    ObjectManager.createObject(ObjectManager.OBJECT_TYPES.CUBE, "cube", ObjectManager.scene);
 })
 
 $('#importModel').on('change', async function () {
@@ -193,8 +197,7 @@ $('#importModel').on('change', async function () {
         reader.onload = async function (e) {
             var fileURL = e.target.result;
             console.log('File URL:', fileURL);
-
-            await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.LOAD_MODEL, "mymodel", ObjectManager.scene, fileURL);
+            await ObjectManager.importCustomModel(ObjectManager.scene, fileURL);
             // You can use the fileURL as needed, e.g., display an image:
             // var img = $('<img>').attr('src', fileURL);
             // $('body').append(img);

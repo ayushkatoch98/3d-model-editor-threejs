@@ -1,7 +1,21 @@
 {
+  "name": "threejs",
+  "version": "0.0.1",
+  "private": true,
+  "target" : "ES2022",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.12"
+  },
   "dependencies": {
     "three": "^0.160.0",
-    "three-outlinepass": "^1.2.0",
-    "vite": "^5.0.12"
+    "three-outlinepass": "^1.2.0"
+  },
+  "compilerOptions": {
+    "target": "ES2022"
   }
 }

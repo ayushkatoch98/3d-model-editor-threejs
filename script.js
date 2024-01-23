@@ -30,7 +30,7 @@ document.querySelector(CANVAS_PARENT_ID).appendChild(RENDERER.domElement);
 document.querySelector(CANVAS_PARENT_ID).addEventListener('click', onMouseClick, false);
 
 
-const camera = await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.CAMERA, "mainCamera", SCENE);
+const camera = ObjectManager.createObject(ObjectManager.OBJECT_TYPES.CAMERA, "mainCamera", SCENE);
 
 const transformControls = new TransformControls(camera, RENDERER.domElement);
 SCENE.add(transformControls);
@@ -51,10 +51,10 @@ ObjectManager.setNav(HIERARCHY_WINDOW);
 
 
 // creating objects
-const light = await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.AMBIENT_LIGHT, "ambientLight", SCENE);
-const directionalLight = await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.DIRECTION_LIGHT, "directionalLight", SCENE);
-const cube = await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.CUBE, "cube", SCENE);
-const circle = await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.SPHERE, "sphere", SCENE);
+const light = ObjectManager.createObject(ObjectManager.OBJECT_TYPES.AMBIENT_LIGHT, "ambientLight", SCENE);
+const directionalLight = ObjectManager.createObject(ObjectManager.OBJECT_TYPES.DIRECTION_LIGHT, "directionalLight", SCENE);
+const cube = ObjectManager.createObject(ObjectManager.OBJECT_TYPES.CUBE, "cube", SCENE);
+const circle = ObjectManager.createObject(ObjectManager.OBJECT_TYPES.SPHERE, "sphere", SCENE);
 // const plane = await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.PLANE, "plane", SCENE);
 // const customModel = await ObjectManager.createObject(ObjectManager.OBJECT_TYPES.LOAD_MODEL, null, SCENE, MODEL_FILENAME) // will always return a list
 // console.log("customModel", customModel) 
