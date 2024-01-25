@@ -1,5 +1,6 @@
 import { radToDeg, degToRad } from "three/src/math/MathUtils"
 import { SELECTED_OBJECT } from "./SelectedObject";
+import { ObjectManager } from "./ObjectManager";
 const TEMPLATE = {
     transform:  {
         x : "number",
@@ -100,13 +101,48 @@ const TEMPLATE = {
                 <div class="properties-main p-2 ">
                 <h3> Material Color </h3>    
                     <div class="flex flex-row  items-center">
-                        <input class="d-material m-1 p-1" type="text" value="${color}"/>
+                        <input class="d-material m-1 p-1" type="color" value="${color}"/>
 
                     </div>
                     </div>
                 `
                  
                 return output;
+            }
+        }
+    },
+
+    texture: {
+        texture: "image",
+        methods: {
+            generateHTML : function(obj){
+
+                if (obj?.isLight || obj?.isCamera) return null;
+
+
+                const extractedTexture = obj.material.map;
+
+                // Convert the texture to a data URL
+                let imageURL = extractedTexture?.image?.src
+
+                if (!imageURL){
+                    imageURL = "https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"
+                }
+
+
+                let html = `\
+                <div class="properties-main p-2 ">
+                <h3> Texture </h3>    
+                    <div class="flex flex-col items-center">
+                        <input id='texture-image-upload' class="d-texture hidden m-1 p-1" type="file" multiple='false' accept='.png,.jpg,.jpeg'/>
+                        <label class="w-full h-auto" for="texture-image-upload">
+                            <img class='d-texture-image w-full h-auto' src='${imageURL}'/>
+                        </label>
+                    </div>
+                </div>
+                `
+
+                return html;
             }
         }
     },
@@ -131,7 +167,7 @@ const TEMPLATE = {
                 <div class="properties-main p-2 ">
                 <h3> Light Color </h3>    
                     <div class="flex flex-row items-center">
-                       <input class="d-light m-1 p-1" type="text" value="${color}"/>
+                       <input class="d-light m-1 p-1" type="color" value="${color}"/>
 
                     </div>
                     </div>
@@ -236,7 +272,24 @@ $(document).on('input', '.d-rotation', function(){
 })
 
 
+$(document).on("change" , ".d-texture", function(){
+    var fileInput = this;
 
+    if (fileInput.files.length > 0) {
+        var selectedFile = fileInput.files[0];
+        var reader = new FileReader();
+
+        reader.onload = async function (e) {
+            var fileURL = e.target.result;
+            
+            ObjectManager.applyTexture(fileURL, SELECTED_OBJECT.obj)
+            
+        };
+
+        // Read the file as a data URL
+        reader.readAsDataURL(selectedFile);
+    }
+})
 
 $(document).on('input', '.d-material', function(){
     const col = $($(".d-material")[0]).val();

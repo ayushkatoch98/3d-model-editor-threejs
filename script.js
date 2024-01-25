@@ -153,6 +153,22 @@ transformControls.addEventListener('dragging-changed', function (event) {
 });
 
 
+$(document).on('keydown', function(e) {
+    console.log("running" , e.key , e.keyCode)
+    if (e.key === 'X' || e.key === 'x') {
+        console.log("deleting")
+        const selectedObject = SELECTED_OBJECT.obj;
+        SELECTED_OBJECT.reset();
+        delete ObjectManager.objs[selectedObject.id]
+
+        SCENE.remove(selectedObject);
+
+        ObjectManager.updateNav()
+        
+    }
+  });
+
+
 animate();
 
 

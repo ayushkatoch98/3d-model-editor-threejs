@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../constant.js'
-import { PerspectiveCamera, AmbientLight, Euler, BoxGeometry, Mesh, MeshPhongMaterial, PlaneGeometry, DirectionalLight, Raycaster } from 'three';
+import { PerspectiveCamera, TextureLoader, SpotLight, AmbientLight, Euler, BoxGeometry, Mesh, MeshPhongMaterial, PlaneGeometry, DirectionalLight, Raycaster } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { SELECTED_OBJECT } from './SelectedObject.js';
 
@@ -16,17 +16,27 @@ export class ObjectManager {
         CUBE: 3,
         CAMERA: 4,
         LOAD_MODEL: 5,
-        CUBE:6,
-        SPHERE: 7
+        CUBE: 6,
+        SPHERE: 7,
+        SPOT_LIGHT: 8,
     }
     static scene;
     static nav;
-    static setScene(scene){
+    static setScene(scene) {
         this.scene = scene;
     }
     static setNav(nav) {
         this.nav = nav;
         console.log("leftNav", nav);
+    }
+
+    static applyTexture(filename, obj){
+        const texture = new TextureLoader().load(filename);
+        texture.wrapS = THREE.RepeatWrapping
+        texture.wrapT = THREE.RepeatWrapping
+        
+        const material = new MeshPhongMaterial({map: texture});
+        obj.material = material;
     }
 
     static createObject(objectType, name, scene) {
@@ -82,8 +92,19 @@ export class ObjectManager {
 
             case this.OBJECT_TYPES.SPHERE: {
                 let geometry = new THREE.SphereGeometry();
-                let material = new MeshPhongMaterial({color: "#ffffff"});
+                let material = new MeshPhongMaterial({ color: "#ffffff" });
                 newObj = new Mesh(geometry, material);
+                break;
+            }
+
+            case this.OBJECT_TYPES.SPOT_LIGHT:{ 
+                newObj = new SpotLight("#ffffff" , 1);
+                newObj.position.set(2, 2, 2);
+                break;
+            }
+
+            default: {
+                console.error("Object of type ",  type , "doesnt exists" );
                 break;
             }
         }
@@ -93,28 +114,28 @@ export class ObjectManager {
             throw new Error("Object of Type", objectType, "doesnt exists");
         }
 
-        if (objectType != this.OBJECT_TYPES.LOAD_MODEL){
+        if (objectType != this.OBJECT_TYPES.LOAD_MODEL) {
             newObj.name = name;
             scene.add(newObj);
             this.addNewObject(newObj);
         }
-        
+
         return newObj;
     }
 
-    static async importCustomModel(scene, fileName = null){
+    static async importCustomModel(scene, fileName = null) {
         let newObj = null;
         newObj = await this.loadCustomModel(fileName, scene);
 
 
-        
+
         return newObj;
     }
 
     static async loadCustomModel(fileName, scene) {
         const gltf = await this.loader.loadAsync(fileName)
         // this.loader.load(fileName, 
-        console.log("WOW", )
+        console.log("WOW",)
         console.log("file", gltf);
         gltf.scene.scale.set(1, 1, 1); // Adjust the scale as needed
 
@@ -126,7 +147,7 @@ export class ObjectManager {
         if (modelScene != undefined) {
 
             for (const item of modelScene.children) {
-                if (item.name == null || item.name == ""){
+                if (item.name == null || item.name == "") {
                     item.name = "random-name";
                 }
                 scene.add(item)
@@ -170,24 +191,44 @@ export class ObjectManager {
 
 }
 
+function capitalizeWords(str) {
+    let words = str.split(' ');
+    let capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+    let result = capitalizedWords.join(' ');
 
+    return result;
+}
 
+$(document).ready(function () {
+    let html = "";
 
-$("#addSphere").on("click", function () {
-    ObjectManager.createObject(ObjectManager.OBJECT_TYPES.SPHERE, "sphere", ObjectManager.scene);
+    for (const key in ObjectManager.OBJECT_TYPES) {
+        
+        if (key == "LOAD_MODEL") continue;
+        html += ` 
+            <li class="py-2  hover:bg-gray-200">
+                <a class="w-full addNewObject " data-type="${key}" id="addPlane"> ${capitalizeWords(key.replace("_", " ").toLowerCase())} </a>
+            </li>
+        `;
+
+    }
+
+    html += `<li class="py-2  hover:bg-gray-200">
+                <input type="file" class="hidden" multiple="false" accept=".glb" id="importModel"
+                    value="Import Model" placeholder="Import Model" />
+                <label class="w-max" for="importModel">Import</label>
+            </li>`
+
+    $("#objectList").empty().append(html);
 })
 
 
-$("#addPlane").on("click", function () {
-    ObjectManager.createObject(ObjectManager.OBJECT_TYPES.PLANE, "plane", ObjectManager.scene);
+$("body").on("click", ".addNewObject", function () {
+    const type = $(this).data("type");
+    ObjectManager.createObject(ObjectManager.OBJECT_TYPES[type.toUpperCase()], type, ObjectManager.scene);
 })
 
-
-$("#addCube").on("click", function () {
-    ObjectManager.createObject(ObjectManager.OBJECT_TYPES.CUBE, "cube", ObjectManager.scene);
-})
-
-$('#importModel').on('change', async function () {
+$("body").on('change', "#importModel", async function () {
     var fileInput = this;
 
     if (fileInput.files.length > 0) {

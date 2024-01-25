@@ -36,15 +36,21 @@
             </span>
 
             <!-- Dropdown content -->
-            <ul class="dropDown absolute hidden w-max flex flex-col gap-1 mt-2 w-auto   shadow-lg">
+            <ul id="objectList" class="dropDown absolute hidden w-max flex flex-col gap-1 mt-2 w-auto    shadow-lg">
                 <li class="py-2  hover:bg-gray-200">
-                    <a class="w-full" id="addPlane"> Plane </a>
+                    <a class="w-full addNewObject " data-type="plane" id="addPlane"> Plane </a>
                 </li>
                 <li class="py-2  hover:bg-gray-200">
-                    <a class="w-full" id="addCube"> Cube </a>
+                    <a class="w-full addNewObject " data-type="cube" id="addCube"> Cube </a>
                 </li>
                 <li class="py-2  hover:bg-gray-200">
-                    <a class="w-full" id="addSphere"> Sphere </a>
+                    <a class="w-full addNewObject " data-type="sphere" id="addSphere"> Sphere </a>
+                </li>
+                <li class="py-2  hover:bg-gray-200">
+                    <a class="w-full addNewObject " data-type="directional_light" id="addSphere"> Directional Light </a>
+                </li>
+                <li class="py-2  hover:bg-gray-200">
+                    <a class="w-full addNewObject " data-type="spot_light" id="addSphere"> Spot Light </a>
                 </li>
                 <li class="py-2  hover:bg-gray-200">
                     <input type="file" class="hidden" multiple="false" accept=".glb" id="importModel"
